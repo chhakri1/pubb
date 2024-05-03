@@ -1,0 +1,40 @@
+pipeline {
+    agent any 
+    options { buildDiscarder(logRotator(numToKeepStr: '4')) }
+    parameters { choice(name: 'DEPLOY_STAGE', choices: ['apply', 'destroy', 'vali'], description: 'lets try') }
+      
+        stages {
+            stage ('dock buld') {
+                steps { 
+                    sh 'docker build -t springboot:v . '
+
+                }
+            }
+            stage ('dco logim') {
+                  
+                steps {  sh 'docker login -u'
+
+                }
+            }
+            stage( 'd TAGn') {
+                steps {
+                    echo "plan sucess"
+                }
+            }
+
+            stage( 'd push to docker hub') {
+                steps {
+                    echo "plan sucess"
+                }
+            }
+            stage ('dock push ecr ') {
+                when {
+                    expression { params.DEPLOY_STAGE == 'apply' }
+                }
+                steps {  
+                    //sh 'terraform apply --auto-approve'
+                    echo "in splly srage"
+
+                }
+            }
+        }
